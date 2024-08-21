@@ -1,4 +1,33 @@
 baseURL = 'https://example.org/'
-languageCode = 'en-us'
-title = 'My New Hugo Site'
-theme = 'ananke'
+author = "Rafael Reis"
+copyright = "© 2024, lee.so"
+paginate = 3
+languageCode = "pt-br"
+DefaultContentLanguage = "pt-br"
+# enableInlineShortcodes = true
+# prevent build failures when using Hugo's Instagram shortcode due to deprecated Instagram API.
+# See https://github.com/gohugoio/hugo/issues/7228#issuecomment-714490456
+ignoreErrors = ["error-remote-getjson"]
+
+# ------------------------------
+theme = "paper"
+title = "cds-reis"
+
+[params]
+  color = 'linen'
+
+  github = 'cds-reis'
+  instagram = 'cardoso_o_reis'
+
+  avatar = 'https://gravatar.com/avatar/2a3f83b1150fed41b0ab02936f727087?size=256&cache=1724249613613'
+  name = 'Rafael Reis'
+  bio = 'Ideias sobre Dart e Flutter'
+# ------------------------------
+
+# needed to  render raw HTML (e.g. <sub>, <sup>, <kbd>, <mark>)
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+#  [markup.highlight]
+#    lineNos = true

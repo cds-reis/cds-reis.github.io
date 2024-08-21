@@ -1,0 +1,608 @@
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg: #faf8f1"
+  lang="pt-br"
+  dir="ltr"
+>
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Extension Types e o Newtype Pattern em Dart - cds-reis</title>
+
+  
+  <meta name="theme-color" />
+
+  
+  
+  
+  
+  <meta name="description" content="Quando eu falo Newtype, o que você pensa? Parece algo muito complicado, mas é bem simples. Você literalmente usa todo dia sem pensar sobre, pois é algo que já faz sentido pra você, desde o começo da sua jornada como programador. Mas, quando a gente coloca no papel essa técnica e fala sobre isso, parece algo de outro mundo.
+Ok, mas o que é Newtype? Apenas um wrapper em algum outro tipo que permite que você estenda sua funcionalidade." />
+  <meta name="author" content="Rafael Reis" />
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.css" />
+
+  
+  
+  
+  
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.png" />
+
+  
+  
+  
+  
+  <link rel="preload" as="image" href="https://gravatar.com/avatar/2a3f83b1150fed41b0ab02936f727087?size=256&amp;cache=1724249613613" />
+  
+  
+
+  
+  
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" />
+  
+  <link rel="preload" as="image" href="http://localhost:1313/instagram.svg" />
+  
+  
+
+  
+  
+  <script
+    defer
+    src="http://localhost:1313/highlight.min.js"
+    onload="hljs.initHighlightingOnLoad();"
+  ></script>
+  
+
+  
+  
+  
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  
+  <meta name="generator" content="Hugo 0.133.0">
+
+  
+  
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header class="mx-auto flex h-[4.5rem] max-w-[--w] px-8 lg:justify-center">
+  <div class="relative z-50 ltr:mr-auto rtl:ml-auto flex items-center">
+    <a class="-translate-y-[1px] text-2xl font-medium" href="http://localhost:1313/"
+      >cds-reis</a
+    >
+    <div
+      class="btn-dark text-[0] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.png)_left_center/_auto_theme('spacing.6')_no-repeat] [transition:_background-position_0.4s_steps(5)] dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 ltr:-mr-8 rtl:-ml-8 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
+  >
+    
+    
+
+    
+    <nav
+      class="mt-12 flex justify-center space-x-10 rtl:space-x-reverse dark:invert ltr:lg:ml-14 rtl:lg:mr-14 lg:mt-0 lg:items-center"
+    >
+      
+      <a
+        class="h-7 w-7 text-[0] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/cds-reis"
+        target="_blank"
+        rel="me"
+      >
+        github
+      </a>
+      
+      <a
+        class="h-7 w-7 text-[0] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/cardoso_o_reis"
+        target="_blank"
+        rel="me"
+      >
+        instagram
+      </a>
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-[--w] px-8 pb-16 pt-14 dark:prose-invert"
+    >
+      
+
+<article>
+  <header class="mb-14">
+    <h1 class="!my-0 pb-2.5">Extension Types e o Newtype Pattern em Dart</h1>
+
+    
+    <div class="text-xs antialiased opacity-60">
+      
+      <time>21 de ago. de 2024</time>
+      
+      
+      
+      
+    </div>
+    
+  </header>
+
+  <section><p>Quando eu falo Newtype, o que você pensa? Parece algo muito complicado, mas é bem simples. Você literalmente usa todo dia sem pensar sobre, pois é algo que já faz sentido pra você, desde o começo da sua jornada como programador. Mas, quando a gente coloca no papel essa técnica e fala sobre isso, parece algo de outro mundo.</p>
+<p>Ok, mas o que é Newtype? Apenas um wrapper em algum outro tipo que permite que você estenda sua funcionalidade. Simples, né?</p>
+<p>Tá bom, eu não te culpo se você não entendeu. Quando eu coloco dessa maneira fica estranho mesmo. Vamos ver um exemplo pra entender o que eu estou falando:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span>List<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> format(<span style="color:#66d9ef">int</span> value) {
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>Você já usou esta função centenas de vezes. Eu não estou brincando. Eu tenho certeza que você já usou esta função. Vamos ver ela com uma perspectiva diferente:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">String</span> format(DateTime value) {
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>Melhor agora, né? Uma função de formatação de data. Mas por que eu troquei a <code>String</code> por <code>List&lt;int&gt;</code> e  o <code>DateTime</code> por uma <code>int</code>?</p>
+<p>Mas aí é que está: eu não troquei nada. Debaixo dos panos, uma <code>String</code> é uma <code>List&lt;int&gt;</code>,  e o <code>DateTime</code> é uma <code>int</code>.</p>
+<p>Na classe <code>DateTime</code>, temos o <a href="https://github.com/dart-lang/sdk/blob/b9479eb440de7af2c9946931a1ecaabf457b31af/sdk/lib/core/date_time.dart#L740">getter <code>milisecondsSinceEpoch</code></a>, que retorna um <code>int</code>, e em sua implementação nós temos o <a href="https://github.com/dart-lang/sdk/blob/b9479eb440de7af2c9946931a1ecaabf457b31af/sdk/lib/_internal/vm_shared/lib/date_patch.dart#L33">campo <code>_value</code></a>, o valor deste <code>DateTime</code>.</p>
+<p>E, com <code>String</code>, é ainda mais simples. A primeira frase da <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">documentação oficial de <code>String</code> no Dart</a> é sobre a <code>String</code> ser uma sequência de &ldquo;UTF-16 code units&rdquo;. Pra pegar esses code units que compõe a <code>String</code>, é só chamar o getter <code>codeUnits</code>, que retorna uma <code>List&lt;int&gt;</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> main(List<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">String</span><span style="color:#f92672">&gt;</span> args) {
+</span></span><span style="display:flex;"><span> print(<span style="color:#e6db74">&#39;Hello World&#39;</span>.codeUnits); <span style="color:#75715e">// [72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>Isto é um Newtype. A <code>String</code> envolve uma <code>List&lt;int&gt;</code> e estende funcionalidade à este tipo, da mesma maneira que <code>DateTime</code> faz com <code>int</code>.</p>
+<p>Adicionar funcionalidade à um tipo mais primitivo é apenas a ponta do iceberg das vantagens do Newtype.</p>
+<p>Você também pode ter percebido que, com este pattern, não conseguimos criar valores ilegais para uma <code>String</code> ou para um <code>DateTime</code>. Mas o que são valores ilegais?</p>
+<p>Como vimos, uma String tem o formato UTF-16. Isto significa que os valores válidos para uma String no Dart são entre 0 e 1114111, inclusivo. Então, vamos tentar construir uma String com um valor inválido, e ver o que acontece:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> main(List<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">String</span><span style="color:#f92672">&gt;</span> args) {
+</span></span><span style="display:flex;"><span> print(<span style="color:#66d9ef">String</span>.fromCharCode(<span style="color:#ae81ff">1114112</span>)); <span style="color:#75715e">// Throws RangeError: Invalid value: Not in inclusive range 0..1114111: 1114112
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>O nosso código falha, e não nos deixa construir uma String quebrada, e <strong>isso é ótimo!</strong> Nós não queremos uma String inválida rondando no nosso código, esperando o pior momento pra fazer um erro indecifrável.</p>
+<p>Da mesma maneira, não podemos criar um DateTime errado:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> main(List<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">String</span><span style="color:#f92672">&gt;</span> args) {
+</span></span><span style="display:flex;"><span> print(DateTime.parse(<span style="color:#e6db74">&#39;Not a date&#39;</span>)); <span style="color:#75715e">// Throws FormatException: Invalid date format
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>Além de adicionar uma camada de funcionalidade para os tipos primitivos, nós também adicionamos uma camada de <strong>validação</strong>. Não é possível criar algum valor inválido para seus tipos, um dos pontos mais importantes do Newtype.</p>
+<p>&ldquo;Mas, -&rdquo;, você, desenvolvedor Flutter, me diz, &ldquo;eu não estou criando uma linguagem de programação. Eu faço telinha! Por que eu iria me preocupar como uma validação de DateTime é feita?&rdquo;. Se você pensou isso, parabéns, você me deixou triste.</p>
+<p>Vamos ver uma função que você provavelmente tem na sua base de código:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span>Future<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">void</span><span style="color:#f92672">&gt;</span> signUp(<span style="color:#66d9ef">String</span> email, <span style="color:#66d9ef">String</span> password) <span style="color:#66d9ef">async</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>isEmailValid(email)) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">throw</span> InvalidEmailException();
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>isPasswordValid(password)) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">throw</span> InvalidPasswordException();
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> logger.info(<span style="color:#e6db74">&#39;Creating user: </span><span style="color:#e6db74">$</span>email<span style="color:#e6db74">&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">await</span> repository.signUpUser(email, password);
+</span></span><span style="display:flex;"><span> } <span style="color:#66d9ef">catch</span> (e) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">throw</span> SignUpApiException(e);
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">await</span> cache.saveUser(email, password);
+</span></span><span style="display:flex;"><span> } <span style="color:#66d9ef">catch</span> (e) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">throw</span> CacheException(e);
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Você gosta disso? Você olha pra essa função e fala &ldquo;Sim, esta é a função mais bonita do mundo!&rdquo;? Se você pensa isso, não tem nenhum problema. Ela faz validação de cada input e, caso algum input esteja inválido, ou alguma operação falhar, solta uma exceção sobre o que deu errado. Como implementação, ela está sólida.</p>
+<p>Mas, imagine quem vai chamar esta função, como ele terá que trabalhar:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">String</span> email <span style="color:#f92672">=</span> controller.email;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">String</span> password <span style="color:#f92672">=</span> controller.password;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">await</span> singUp(password, email);
+</span></span><span style="display:flex;"><span>} on InvalidEmailException {
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">// handle email exception
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>} on SignUpApiException {
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">// handle sign up api exception
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>} on CacheException {
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">// handle cache exception
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>Podemos ver os problemas: a pessoa passou a senha no lugar do e-mail, o e-mail no lugar da senha e ela esqueceu de tratar o erro de senha inválida.</p>
+<p>Mas, você me diz: &ldquo;Esta função que eu estou fazendo é pra mim, então esses erros não vão acontecer!&rdquo;, e sim, se é um código privado, onde você, e, <em>com toda certeza do mundo, apenas você</em>, vai ver este código, então não tem problema. O problema vem quando estamos fazendo código para outras pessoas, seja num contexto corporativo ou open-source, onde este tipo de código mostra seus problemas, pois, daqui a 5, 10 20 anos, alguém vai cometer esses erros, e daí é uma bomba relógio no código, pronta para estourar e fazer alguns pobres desenvolvedores passarem o feriado corrigindo isso.</p>
+<p>E nem falamos do pior: está vendo como temos um <em>log</em> do e-mail? Neste problema que acabamos de ver, vamos <em>logar</em> a senha do usuário. Está vendo como este código é frágil?</p>
+<p>O Newtype pattern é uma ótima ferramenta para impedir que isto aconteça. Para isso, vamos criar um Newtype próprio.</p>
+<h3 id="classe-ou-extension-type">Classe ou Extension Type</h3>
+<p>Vamos criar umas regras para os nossos Newtypes:</p>
+<ul>
+<li>Eles precisam ser <strong>válidos</strong>, nós não podemos construir um Newtype com valor interno inválido;</li>
+<li>Ser <strong>imutável</strong>, caso precisamos alterar o valor de um Newtype, então criamos outro;</li>
+<li>Ter <strong>igualdade</strong> com outro Newtype construído a partir do mesmo valor;</li>
+<li>Ser <strong>livre de <em>side-effects</em></strong> em sua construção.</li>
+</ul>
+<p>Nós temos duas maneiras de criar um Newtype: usando classes, ou usando extension types.</p>
+<blockquote>
+<p><strong>Aviso:</strong>  Este artigo não é uma introdução a extension types, e é altamente desejável que você já tenha um entendimento do que eles são. Caso não tenha, recomendo:</p>
+<ul>
+<li><a href="https://dart.dev/language/extension-types">A documentação oficial do Dart em Extension Types</a>;</li>
+<li><a href="https://www.youtube.com/watch?v=2TJIOpBDMnU">Este vídeo do Professor Diego Antunes explicando certinho o que são Extension Types</a>.</li>
+</ul>
+</blockquote>
+<h4 id="usando-classes">Usando classes</h4>
+<p>Antes de continuar, vou conversar sobre um pattern que já vi sendo usado, <strong>e altamente aconselho contra o uso</strong>. Eu não sei se ele possuí um nome oficial, então resolvi chamar de &ldquo;<strong>Build First, Validate Later</strong>&rdquo;.</p>
+<p>Como funciona: nós construímos nosso Newtype <strong>sem validação</strong>, e depois checamos para ver se é um Newtype válido:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Email</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">String</span> value;  
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> Email(<span style="color:#66d9ef">this</span>.value);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">bool</span> isValid() <span style="color:#f92672">=&gt;</span> _isEmailValid(value);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> main(List<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">String</span><span style="color:#f92672">&gt;</span> args) {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">final</span> email <span style="color:#f92672">=</span> Email(<span style="color:#e6db74">&#39;invalid email&#39;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>O problema desta abordagem é óbvio: a validação não é mais obrigatória, e sim opcional. Quando nós construímos software robusto que precisa durar, e, na minha opinião, isto seria considerado um anti-pattern.</p>
+<p>Além disso, ele viola o primeiro dos nossos pontos: <strong>Ele precisa ser válido</strong>. Da mesma maneira que não queremos que nossa String tenha algum valor que não seja UTF-16 válido, também não queremos que nosso Email tenha um valor interno inválido.</p>
+<p>Vamos ver uma maneira de melhorar a construção do nosso Newtype Email:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#39;package:email_validator/email_validator.dart&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Email</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">String</span> value;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> Email(<span style="color:#66d9ef">this</span>.value) <span style="color:#f92672">:</span> <span style="color:#66d9ef">assert</span>(EmailValidator.validate(value));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Está melhorando! Agora, ao construir um e-mail, nós chamamos a função <code>validate</code> do package <a href="https://pub.dev/packages/email_validator">email_validator</a> e, usando o nosso <code>assert</code>, garantimos que o e-mail passado é válido.</p>
+<p>Porém, ainda temos problemas. Primeiramente, o <code>assert</code> só vai ser chamado no modo <code>debug</code> do seu projeto, ou seja, quando seu projeto estiver em modo <code>release</code>, e seu usuário final realizar o cadastro, não terá validação de e-mail. Segundo, caso o <code>assert</code> falhar, nós não teremos um <code>InvalidEmailException</code>, e sim um <code>AssertionError</code>.</p>
+<p>Então, vamos melhorar:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#39;package:email_validator/email_validator.dart&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Email</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">String</span> value;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> Email(<span style="color:#66d9ef">this</span>.value) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>EmailValidator.validate(_value)) {
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">throw</span> InvalidEmailException();
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InvalidEmailException</span> <span style="color:#66d9ef">implements</span> Exception {}
+</span></span></code></pre></div><p>Agora sim, esta implementação resolveu esses dois erros: O bloco do construtor será executado tanto em <code>debug</code> quanto <code>release</code>, e, caso seja inválido, soltará um <code>InvalidEmailException</code>.</p>
+<p>Porém, se você está acostumado com Dart, você provavelmente tem um problema com sua implementação. Quando nós estamos convertendo um valor em Dart, normalmente de uma String, para algum outro tipo, temos dois construtores: o <code>parse</code> e o <code>tryParse</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> main(List<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">String</span><span style="color:#f92672">&gt;</span> args) {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">bool</span> parse <span style="color:#f92672">=</span> <span style="color:#66d9ef">bool</span>.parse(<span style="color:#e6db74">&#39;true&#39;</span>);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">?</span> tryParse <span style="color:#f92672">=</span> <span style="color:#66d9ef">int</span>.tryParse(<span style="color:#e6db74">&#39;10&#39;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>E esses dois métodos já explicam o que pode acontecer: eles podem <strong>falhar</strong>. No caso do parse, caso falhe, solta alguma exceção, normalmente um <code>FormatException</code>, enquanto o <code>tryParse</code> retorna um <code>null</code> quando o parseamento falha.</p>
+<p>Vamos implementar isso no nosso Newtype:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#39;package:email_validator/email_validator.dart&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Email</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">String</span> value;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> Email._(<span style="color:#66d9ef">this</span>.value);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">factory</span> Email.parse(<span style="color:#66d9ef">String</span> <span style="color:#66d9ef">source</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>EmailValidator.validate(<span style="color:#66d9ef">source</span>)) {
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">throw</span> InvalidEmailException();
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> Email._(<span style="color:#66d9ef">source</span>);
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> Email<span style="color:#f92672">?</span> tryParse(<span style="color:#66d9ef">String</span> <span style="color:#66d9ef">source</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>EmailValidator.validate(<span style="color:#66d9ef">source</span>)) {
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> Email._(<span style="color:#66d9ef">source</span>);
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InvalidEmailException</span> <span style="color:#66d9ef">implements</span> Exception {}
+</span></span></code></pre></div><p>Perfeito! A construção do nosso Newtype está perfeita! Nós expomos dois métodos que quem chama a função pode usar para construir um e-mail, com a validação sendo feita em ambos, dando a opção de escolher qual é a melhor dependendo do caso. Além disso, os detalhes de implementação estão escondidos. Quem chama a função <code>Email.parse</code> não faz ideia como a validação do e-mail está sendo feita, muito menos que estamos usando um package externo para isso, e ela nem precisa!</p>
+<p>Vamos ver como nosso Newtype está se adequando as regras que estabelecemos anteriormente:</p>
+<ul>
+<li>Eles precisam ser <strong>válidos</strong>, nós não podemos construir um Newtype com valor interno inválido; ✅</li>
+<li>Ser <strong>imutável</strong>, caso precisamos alterar o valor de um Newtype, então criamos outro; ❌</li>
+<li>Ter <strong>igualdade</strong> com outro Newtype construído a partir do mesmo valor; ❌</li>
+<li>Ser <strong>livre de <em>side-effects</em></strong> em sua construção. ✅</li>
+</ul>
+<p>Conseguimos metade até agora! Nosso construtor só permite que Newtypes válidos sejam construídos, além de se manter livre de <em>side effects</em>. Vamos ver a parte de <strong>imutabilidade</strong>.</p>
+<p>Vemos que nosso valor interior, <code>value</code>, tem um grande problema: ele é mutável. Com nossa implementação atual, nós podemos alterar o valor interno para algum valor inválido <strong>após</strong> sua construção.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> main(List<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">String</span><span style="color:#f92672">&gt;</span> args) {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">final</span> Email email <span style="color:#f92672">=</span> Email.parse(<span style="color:#e6db74">&#39;valid@email.com&#39;</span>);
+</span></span><span style="display:flex;"><span> email.value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;invalid email&#39;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Para ajustar isto, nós podemos fazer uma simples mudança: deixar <code>value</code> como <code>final</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Email</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">String</span> value;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">const</span> Email._(<span style="color:#66d9ef">this</span>.value);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>Com isso, mudar o valor original é um erro de compilação, além de conseguir deixar a classe Email como <code>const</code>.</p>
+<p>Ótimo. Para finalizar, nós precisamos implementar a <strong>igualdade</strong>. Essa parte é fácil, só precisamos dar <code>override</code> no <code>operator ==</code> e <code>hashcode</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">@</span>override
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">bool</span> <span style="color:#66d9ef">operator</span> <span style="color:#f92672">==</span>(covariant Email other) {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">if</span> (identical(<span style="color:#66d9ef">this</span>, other)) <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">return</span> other.value <span style="color:#f92672">==</span> value;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">@</span>override
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#66d9ef">get</span> hashCode <span style="color:#f92672">=&gt;</span> value.hashCode;
+</span></span></code></pre></div><p>Agora, nosso Newtype está seguindo todas as regras que estabelecemos:</p>
+<ul>
+<li>Eles precisam ser <strong>válidos</strong>, nós não podemos construir um Newtype com valor interno inválido; ✅</li>
+<li>Ser <strong>imutável</strong>, caso precisamos alterar o valor de um Newtype, então criamos outro; ✅</li>
+<li>Ter <strong>igualdade</strong> com outro Newtype construído a partir do mesmo valor; ✅</li>
+<li>Ser <strong>livre de <em>side-effects</em></strong> em sua construção. ✅</li>
+</ul>
+<p>Vamos ver como nossa implementação final ficou de nossa classe:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#39;package:email_validator/email_validator.dart&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Email</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">String</span> value;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">const</span> Email._(<span style="color:#66d9ef">this</span>.value);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">factory</span> Email.parse(<span style="color:#66d9ef">String</span> <span style="color:#66d9ef">source</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>EmailValidator.validate(<span style="color:#66d9ef">source</span>)) {
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">throw</span> InvalidEmailException();
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> Email._(<span style="color:#66d9ef">source</span>);
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> Email<span style="color:#f92672">?</span> tryParse(<span style="color:#66d9ef">String</span> <span style="color:#66d9ef">source</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>EmailValidator.validate(<span style="color:#66d9ef">source</span>)) {
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> Email._(<span style="color:#66d9ef">source</span>);
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#960050;background-color:#1e0010">@</span>override
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">bool</span> <span style="color:#66d9ef">operator</span> <span style="color:#f92672">==</span>(covariant Email other) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (identical(<span style="color:#66d9ef">this</span>, other)) <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> other.value <span style="color:#f92672">==</span> value;
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#960050;background-color:#1e0010">@</span>override
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#66d9ef">get</span> hashCode <span style="color:#f92672">=&gt;</span> value.hashCode;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InvalidEmailException</span> <span style="color:#66d9ef">implements</span> Exception {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> main(List<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">String</span><span style="color:#f92672">&gt;</span> args) {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">final</span> Email email1 <span style="color:#f92672">=</span> Email.parse(<span style="color:#e6db74">&#39;valid@email.com&#39;</span>); <span style="color:#75715e">// Builds successfully
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> <span style="color:#66d9ef">final</span> Email email2 <span style="color:#f92672">=</span> Email.parse(<span style="color:#e6db74">&#39;invalid email&#39;</span>); <span style="color:#75715e">// Throws InvalidEmailException
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> <span style="color:#66d9ef">final</span> Email<span style="color:#f92672">?</span> email3 <span style="color:#f92672">=</span> Email.tryParse(<span style="color:#e6db74">&#39;valid@email.com&#39;</span>); <span style="color:#75715e">// Builds successfully
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> <span style="color:#66d9ef">final</span> Email<span style="color:#f92672">?</span> email4 <span style="color:#f92672">=</span> Email.tryParse(<span style="color:#e6db74">&#39;invalid email&#39;</span>); <span style="color:#75715e">// Returns null
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>Bastante coisa, não acha? Sim, um dos meus principais problemas com este método é a quantidade de boilerplate que precisa ser escrito para seguir essas regras. Além disso, temos o overhead que uma classe tem, então caso a gente tenha uma situação onde precisamos instanciar milhares de Newtypes ao mesmo tempo, podemos ter uma penalidade de performance.</p>
+<h4 id="usando-extension-types">Usando Extension Types</h4>
+<p>Usando Extension Types, a definição do nosso Newtype fica muito mais simples:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#39;package:email_validator/email_validator.dart&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>extension type <span style="color:#66d9ef">const</span> Email._(<span style="color:#66d9ef">String</span> _value) {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">factory</span> Email.parse(<span style="color:#66d9ef">String</span> <span style="color:#66d9ef">source</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>EmailValidator.validate(<span style="color:#66d9ef">source</span>)) {
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">throw</span> InvalidEmailException();
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> Email._(<span style="color:#66d9ef">source</span>);
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> Email<span style="color:#f92672">?</span> tryParse(<span style="color:#66d9ef">String</span> <span style="color:#66d9ef">source</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>EmailValidator.validate(<span style="color:#66d9ef">source</span>)) {
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> Email._(<span style="color:#66d9ef">source</span>);
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InvalidEmailException</span> <span style="color:#66d9ef">implements</span> Exception {}
+</span></span></code></pre></div><p>É só isso. Simples assim. Não precisa dar <code>override</code> em nada. Além de ganhar o benefício de não precisar escrever tanto código, nós ganhamos o benefício de performance: Extension Types são uma abstração em <strong>tempo de compilação</strong>. Isso significa que não tem nenhum custo de performance usar eles.</p>
+<p>Se lembra da função <code>signUp</code>? Vamos ver como podemos melhorar ela usando nossos Newtypes.</p>
+<blockquote>
+<p>Eu vou deixar a implementação do Newtype <code>Password</code> para você implementar, mas sua implementação vai ser bem parecida com a do <code>Email</code>.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span>Future<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">void</span><span style="color:#f92672">&gt;</span> signUp(Email email, Password password) <span style="color:#66d9ef">async</span> {
+</span></span><span style="display:flex;"><span> logger.info(<span style="color:#e6db74">&#39;Creating user: </span><span style="color:#e6db74">$</span>email<span style="color:#e6db74">&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">await</span> repository.signUpUser(email, password);
+</span></span><span style="display:flex;"><span> } <span style="color:#66d9ef">catch</span> (e) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">throw</span> SignUpApiException(e);
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">await</span> cache.saveUser(email, password);
+</span></span><span style="display:flex;"><span> } <span style="color:#66d9ef">catch</span> (e) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">throw</span> CacheException(e);
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">final</span> Email<span style="color:#f92672">?</span> email <span style="color:#f92672">=</span> Email.tryParse(controller.email);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">final</span> Password<span style="color:#f92672">?</span> password <span style="color:#f92672">=</span> Password.tryParse(controller.password);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">if</span> (email <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> password <span style="color:#f92672">====</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// handle invalid email or password
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">await</span> singUp(password, email);
+</span></span><span style="display:flex;"><span>} on SignUpApiException {
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">// handle sign up api exception
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>} on CacheException {
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">// handle cache exception
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>Fontes:
+<a href="https://rust-unofficial.github.io/patterns/patterns/behavioural/newtype.html">https://rust-unofficial.github.io/patterns/patterns/behavioural/newtype.html</a>
+<a href="https://www.howtocodeit.com/articles/ultimate-guide-rust-newtypes">https://www.howtocodeit.com/articles/ultimate-guide-rust-newtypes</a></p>
+</section>
+
+  
+  
+
+  
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+</article>
+
+
+    </main>
+
+    <footer
+  class="mx-auto flex h-[4.5rem] max-w-[--w] items-center px-8 text-xs uppercase tracking-wider opacity-60"
+>
+  <div class="mr-auto">
+  
+    © 2024, lee.so
+  
+  </div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+
+  </body>
+</html>

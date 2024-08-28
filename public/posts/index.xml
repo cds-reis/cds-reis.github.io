@@ -2,12 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on cds-reis</title>
-    <link>http://localhost:1313/posts/</link>
+    <link>https://cds-reis.github.io/posts/</link>
     <description>Recent content in Posts on cds-reis</description>
     <generator>Hugo</generator>
     <language>pt-br</language>
     <copyright>© 2024, cds-reis</copyright>
-    <lastBuildDate></lastBuildDate>
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 28 Aug 2024 13:38:13 -0300</lastBuildDate>
+    <atom:link href="https://cds-reis.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Não use Extension Types para Exceptions</title>
+      <link>https://cds-reis.github.io/posts/dont-use-extension-types-for-exceptions/</link>
+      <pubDate>Wed, 28 Aug 2024 13:38:13 -0300</pubDate>
+      <guid>https://cds-reis.github.io/posts/dont-use-extension-types-for-exceptions/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Extension Types e o Newtype Pattern em Dart</title>
+      <link>https://cds-reis.github.io/posts/extension-types-and-the-newtype-pattern-in-dart/</link>
+      <pubDate>Wed, 21 Aug 2024 11:45:12 -0300</pubDate>
+      <guid>https://cds-reis.github.io/posts/extension-types-and-the-newtype-pattern-in-dart/</guid>
+      <description>Quando eu falo Newtype, o que você pensa? Parece algo muito complicado, mas é bem simples. Você literalmente usa todo dia sem pensar sobre, pois é algo que já faz sentido pra você, desde o começo da sua jornada como programador. Mas, quando a gente coloca no papel essa técnica e fala sobre isso, parece algo de outro mundo.&#xA;Ok, mas o que é Newtype? Apenas um wrapper em algum outro tipo que permite que você estenda sua funcionalidade.</description>
+    </item>
   </channel>
 </rss>

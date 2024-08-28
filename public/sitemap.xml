@@ -2,14 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://cds-reis.github.io/</loc>
+    <lastmod>2024-08-28T13:38:13-03:00</lastmod>
+  </url><url>
+    <loc>https://cds-reis.github.io/posts/dont-use-extension-types-for-exceptions/</loc>
+    <lastmod>2024-08-28T13:38:13-03:00</lastmod>
+  </url><url>
+    <loc>https://cds-reis.github.io/posts/</loc>
+    <lastmod>2024-08-28T13:38:13-03:00</lastmod>
+  </url><url>
+    <loc>https://cds-reis.github.io/posts/extension-types-and-the-newtype-pattern-in-dart/</loc>
     <lastmod>2024-08-21T11:45:12-03:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2024-08-21T11:45:12-03:00</lastmod>
+    <loc>https://cds-reis.github.io/categories/</loc>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://cds-reis.github.io/tags/</loc>
   </url>
 </urlset>

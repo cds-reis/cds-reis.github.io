@@ -1,4 +1,4 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://cds-reis.github.io/'
 author = "Rafael Reis"
 copyright = "© 2024, cds-reis"
 paginate = 3

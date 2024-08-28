@@ -1,6 +1,6 @@
 baseURL = 'https://example.org/'
 author = "Rafael Reis"
-copyright = "© 2024, lee.so"
+copyright = "© 2024, cds-reis"
 paginate = 3
 languageCode = "pt-br"
 DefaultContentLanguage = "pt-br"

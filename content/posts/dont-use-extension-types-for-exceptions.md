@@ -111,4 +111,22 @@ Então, ao lançar a exceção `Exception2`, nós caímos na cláusula da `Excep
 
 O maior problema disso é: parece código normal. Nós não temos nenhum aviso, nenhum _lint_ para nos avisar que o que estamos fazendo é perigoso. Além disso, se eu não te contasse que os tipos `Exception1` e `Exception2` não são classes, você diria que este comportamento é completamente sem sentido, provavelmente pensando que eu tenho péssima lógica de programação, sou maluco, talvez ambos.
 
-Mas funciona assim, e este é o comportamento desejado de Extension Types. Como eu disse, Extension Types são uma das minhas adições favoritas à linguagem, porém, é necessário saber onde são os melhores lugares para seu uso. Por isso, **não use Extension Types para exceções**.
+Para um outro exemplo, vamos ver o que aconteceria se a gente não colocar uma cláusula `try` para capturar a exceção:
+
+```dart
+void main(List<String> args) {
+  throw ParseException({'invalid_json_data': null}); // Unhandled exception: {json_field: 123}
+}
+```
+
+Nós não temos contexto nenhum da exceção que foi lançada. Nós vamos ter que procurar no _Stack Trace_ da exceção e tentar encontrar onde foi lançado e qual é a causa do lançamento.
+
+A gente não deveria precisar disso. Uma exceção já deveria falar o que aconteceu apenas usando seu nome e primeira linha da descrição. Nós perdemos todo esse contexto quando usamos Extension Types.
+
+Não se angane, Extension Types ainda são uma das melhores adições à linguagem. Porém o maior problema é como algo assim pode passar despercebido e causar problemas no futuro. É muito fácil fazer um erro como esse e não perceber até te dar dor de cabeça.
+
+Felizmente, temos duas boas maneiras de resolver isto, uma manual e outra automática:
+
+- **Manual**: não usar Extension Types para criar exceções. Falando assim parece bem simples, mas é a mais fácil. Criar regras que proíbem o uso de Extension Types para exceções na sua base de código pode ser o suficiente;
+
+- **Automática**: usar _lints_ para detectar o uso de Extension Types incorretamente. O _lint [only_throw_errors](https://dart.dev/tools/linter-rules/only_throw_errors)_ avisa automaticamente quando um tipo que não extende ou implementa as classes `Error` ou `Exception` 

@@ -5,3 +5,7 @@ theme = 'bear_cub'
 
 # Generate a nice robots.txt for SEO
 enableRobotsTXT = true
+
+[caches]
+[caches.images]
+dir = ':cacheDir/images'

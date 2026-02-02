@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cds-reis.github.io/sitemap.xml

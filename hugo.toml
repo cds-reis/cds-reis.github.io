@@ -1,0 +1,7 @@
+baseURL = 'https://cds-reis.github.io/'
+languageCode = 'en-us'
+title = 'cds-reis'
+theme = 'bear_cub'
+
+# Generate a nice robots.txt for SEO
+enableRobotsTXT = true

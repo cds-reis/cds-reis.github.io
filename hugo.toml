@@ -1,4 +1,18 @@
 baseURL = 'https://cds-reis.github.io/'
 languageCode = 'en-us'
-title = 'cds-reis'
+title = 'reis'
 theme = 'poison'
+
+[params]
+brand = 'reis'
+remote_brand_image = 'https://avatars.githubusercontent.com/u/114937464'
+description = 'Flutter & Dart Developer'
+dark_mode = true
+discord_url = "https://discord.com"
+github_url = "https://github.com"
+
+# NOTE: If you don't want to use RSS, comment or delete the following lines
+# Adds an RSS icon to the end of the socials which links to {{ .Site.BaseURL }}/index.xml
+rss_icon = true
+# Which section the RSS icon links to, defaults to all content. See https://gohugo.io/templates/rss/#section-rss
+rss_section = "posts"

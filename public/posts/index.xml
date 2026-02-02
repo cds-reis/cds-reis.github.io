@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on cds-reis</title>
-    <link>https://cds-reis.github.io/posts/</link>
-    <description>Recent content in Posts on cds-reis</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <title>Posts on reis</title>
+    <link>http://localhost:1313/posts/</link>
+    <description>Recent content in Posts on reis</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <atom:link href="https://cds-reis.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Feb 2026 00:14:02 -0300</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Flutter Value Objects</title>
+      <link>http://localhost:1313/posts/flutter_value_objects/</link>
+      <pubDate>Mon, 02 Feb 2026 00:14:02 -0300</pubDate>
+      <guid>http://localhost:1313/posts/flutter_value_objects/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>
